@@ -4,6 +4,7 @@
 /public/storage
 /storage/*.key
 /.env
+/.htaccess
 /.env.*
 /homestead.yaml
 /.vagrant
