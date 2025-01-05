@@ -28,32 +28,44 @@ class ProductController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|min:3|unique:products',
-            'price' => 'required|integer',
-            'stock' => 'required|integer',
-            'category_id' => 'required',
-            'image' => 'required|image|mimes:png,jpg,jpeg'
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'name' => 'required|min:3|unique:products',
+        'price' => 'required|integer',
+        'stock' => 'required|integer',
+        'category_id' => 'required',
+        'image' => 'required|image|mimes:png,jpg,jpeg'
+    ]);
 
-        $filename = time() . '.' . $request->image->extension();
-        $request->image->storeAs('public/products', $filename);
-        $data = $request->all();
+    // Menyimpan gambar dengan nama file yang unik
+    $filename = time() . '.' . $request->image->extension();
+    $path = $request->image->storeAs('public/products', $filename);
 
-        $category = DB::table('categories')->where('id', $request->category_id)->first();
+    // Mendapatkan path lengkap file
+    $filePath = storage_path('app/' . $path);
 
-        $product = new \App\Models\Product;
-        $product->name = $request->name;
-        $product->price = (int) $request->price;
-        $product->stock = (int) $request->stock;
-        $product->category = $category->name;
-        $product->category_id = $request->category_id;
-        $product->image = $filename;
-        $product->save();
+    // Mengubah izin file agar bisa diakses oleh web server
+    chmod($filePath, 0777); 
 
-        return redirect()->route('product.index')->with('success', 'Product successfully created');
-    }
+    // Mengambil data lainnya
+    $data = $request->all();
+    $category = DB::table('categories')->where('id', $request->category_id)->first();
+
+    // Menyimpan produk baru ke database
+    $product = new \App\Models\Product;
+    $product->name = $request->name;
+    $product->price = (int) $request->price;
+    $product->stock = (int) $request->stock;
+    $product->category = $category->name;
+    $product->category_id = $request->category_id;
+    $product->image = $filename;  // Menyimpan nama file gambar di database
+    $product->save();
+
+    // Mengarahkan pengguna kembali ke daftar produk dengan pesan sukses
+    return redirect()->route('product.index')->with('success', 'Product successfully created');
+}
+
 
     public function edit($id)
     {

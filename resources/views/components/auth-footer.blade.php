@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; Code with Bahri 2024
+      Copyright &copy; Code with Ryan 2024
   </div>

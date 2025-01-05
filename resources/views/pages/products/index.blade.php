@@ -70,12 +70,12 @@
                                                     {{ $product->price }}
                                                 </td>
                                                 <td>
-                                                @if ($product->image)
-    <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" width="100px" class="img-thumbnail">
-@else
-    <span class="badge badge-danger">No Image</span>
-@endif
+                                                    @if ($product->image)
+                                                    <img src="{{ asset('storage/products/' . $product->image) }}" alt="Product Image" width="100px" class="img-thumbnail">
 
+                                                    @else
+                                                        <span class="badge badge-danger">No Image</span>
+                                                    @endif
 
                                                 </td>
                                                 <td>{{ $product->created_at }}</td>

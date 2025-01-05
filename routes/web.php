@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('order', \App\Http\Controllers\OrderController::class);
     Route::resource('categories', \App\Http\Controllers\CategoryController::class);
 });
+Route::get('upload', [ImageUploadController::class, 'index']);
+Route::post('upload', [ImageUploadController::class, 'upload'])->name('image.upload');
